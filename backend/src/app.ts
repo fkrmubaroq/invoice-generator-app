@@ -1,11 +1,11 @@
-import express from "express";
+import express, { Express } from "express";
 import { pdfRoutes } from "./routes/pdf-routes";
 import { errorMiddleware } from "./middlewares/error-middleware";
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
 
-const app = express();
+const app: Express = express();
 const allowedOrigins = process.env.ALLOWED_ORIGIN
   ? process.env.ALLOWED_ORIGIN.split(",")
   : [];

@@ -3,7 +3,7 @@ import multer from "multer";
 import path from "path";
 import { pdfController } from "../controllers/pdf-controller";
 
-const router = Router();
+const router: Router = Router();
 
 // Configure multer for file uploads
 const upload = multer({
