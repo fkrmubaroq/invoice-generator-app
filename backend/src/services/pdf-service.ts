@@ -13,7 +13,7 @@ export class PdfService {
     };
     const executablePath = await chromium.executablePath();
     const browser = await puppeteer.launch({
-      args: puppeteer.defaultArgs(),
+      args: puppeteer.defaultArgs({ args: chromium.args, headless: "shell" }),
       defaultViewport: viewport,
       executablePath: executablePath,
       headless: true,
