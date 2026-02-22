@@ -15,11 +15,6 @@ const config = defineConfig({
     tanstackRouter({ target: "react", autoCodeSplitting: true }),
     viteReact(),
   ],
-  build: {
-    rollupOptions: {
-      external: ["dayjs"],
-    },
-  },
 });
 
 export default config;
