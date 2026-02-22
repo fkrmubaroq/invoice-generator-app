@@ -7,7 +7,7 @@ const router: Router = Router();
 
 // Configure multer for file uploads
 const upload = multer({
-  dest: path.join(__dirname, "../../uploads"),
+  storage: multer.memoryStorage(),
 });
 
 // POST /api/generate-pdf
