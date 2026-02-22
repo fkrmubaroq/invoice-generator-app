@@ -29,6 +29,9 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/", (req, res) => {
+  res.send("Hello World!").end();
+});
 // Routes
 app.use("/api", pdfRoutes);
 
