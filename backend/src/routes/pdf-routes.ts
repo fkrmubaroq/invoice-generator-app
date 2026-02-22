@@ -1,6 +1,5 @@
 import { Router } from "express";
 import multer from "multer";
-import path from "path";
 import { pdfController } from "../controllers/pdf-controller";
 
 const router: Router = Router();

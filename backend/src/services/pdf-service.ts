@@ -1,5 +1,5 @@
 import chromium from "@sparticuz/chromium";
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-core";
 
 export class PdfService {
   async generatePdfFromHtml(htmlContent: string): Promise<Buffer> {
@@ -11,12 +11,12 @@ export class PdfService {
       isMobile: false,
       width: 1920,
     };
-    const executablePath = await chromium.executablePath("bin/");
+    const executablePath = await chromium.executablePath();
     const browser = await puppeteer.launch({
       args: puppeteer.defaultArgs(),
       defaultViewport: viewport,
       executablePath: executablePath,
-      headless: "shell",
+      headless: true,
     });
 
     try {
