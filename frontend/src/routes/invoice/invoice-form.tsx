@@ -39,6 +39,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import "pdfmake/build/vfs_fonts";
 import api from "@/lib/api";
 import { INVOICE_PPN_RATE_PERCENT } from "@/lib/invoice-ppn";
+import { INVOICE_TEMPLATES, INVOICE_TEMPLATE_IDS } from "@/lib/invoice-templates";
 
 const invoiceItemSchema = z.object({
   description: z.string().min(1, "Deskripsi wajib diisi"),
@@ -47,6 +48,7 @@ const invoiceItemSchema = z.object({
 });
 
 const invoiceFormSchema = z.object({
+  templateId: z.enum(INVOICE_TEMPLATE_IDS),
   invoiceNumber: z.string().min(1, "Nomor invoice wajib diisi"),
   invoiceDate: z.string().min(1, "Tanggal wajib diisi"),
   customerName: z.string().min(1, "Nama pelanggan wajib diisi"),
@@ -66,6 +68,7 @@ export default function InvoiceForm() {
   const form = useForm<InvoiceFormData>({
     resolver: zodResolver(invoiceFormSchema as any),
     defaultValues: {
+      templateId: "classic",
       invoiceNumber: "",
       invoiceDate: new Date().toISOString().split("T")[0],
       customerName: "",
@@ -194,6 +197,20 @@ export default function InvoiceForm() {
               <CardTitle>Informasi Invoice</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="templateId">Template invoice</Label>
+                <select
+                  id="templateId"
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  {...form.register("templateId")}
+                >
+                  {INVOICE_TEMPLATES.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.label} — {t.description}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="invoiceNumber">Nomor Invoice</Label>
@@ -443,7 +460,7 @@ export default function InvoiceForm() {
         </form>
       </div>
 
-      <PreviewInvoice url="/templates/invoice-template.html" form={form} />
+      <PreviewInvoice form={form} />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { formatCurrencyPlain } from "@/lib/format-currency";
 import { Trash2 } from "lucide-react";
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
+import type { InvoiceTemplateId } from "@/lib/invoice-templates";
 
 interface InvoiceItem {
   description: string;
@@ -13,6 +14,7 @@ interface InvoiceItem {
 interface EditableInvoiceTableProps {
   fields: { id: string }[];
   register: UseFormRegister<{
+    templateId: InvoiceTemplateId;
     invoiceNumber: string;
     invoiceDate: string;
     customerName: string;

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice ${{invoice_number}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 15px;
+      line-height: 1.65;
+      color: #0d0d0d;
+      background: #fdfdfd;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 56px 48px 80px;
+    }
+    .bar {
+      height: 6px;
+      background: #0d0d0d;
+      margin-bottom: 40px;
+    }
+    .head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid #0d0d0d;
+      margin-bottom: 40px;
+    }
+    .head .logo-section img {
+      max-width: 132px;
+      max-height: 64px;
+      object-fit: contain;
+    }
+    .head .right { text-align: right; }
+    .head .inv {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 52px;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      color: #0d0d0d;
+    }
+    .head .no {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+    .grid h3 {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 18px;
+      letter-spacing: 0.2em;
+      color: #525252;
+      margin-bottom: 10px;
+    }
+    .grid .val { font-weight: 600; }
+    .grid .addr {
+      color: #404040;
+      white-space: pre-line;
+      font-weight: 400;
+    }
+    .items-slot { margin-bottom: 48px; }
+    .items-slot table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .totals {
+      display: flex;
+      justify-content: flex-end;
+      border-top: 1px solid #0d0d0d;
+      padding-top: 24px;
+    }
+    .totals-table { width: 300px; }
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .totals-row .label { color: #525252; font-size: 14px; }
+    .totals-row .value { font-weight: 600; }
+    .totals-row.total {
+      border-bottom: none;
+      margin-top: 8px;
+      padding-top: 20px;
+      border-top: 2px solid #0d0d0d;
+    }
+    .totals-row.total .label,
+    .totals-row.total .value { font-size: 18px; font-weight: 700; }
+    footer {
+      margin-top: 64px;
+      text-align: center;
+      font-size: 12px;
+      color: #737373;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="bar" aria-hidden="true"></div>
+    <header class="head">
+      <div class="logo-section">${{logo}}</div>
+      <div class="right">
+        <p class="inv">Invoice</p>
+        <p class="no">#${{invoice_number}}</p>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div>
+        <h3>Tanggal</h3>
+        <p class="val">${{invoice_date}}</p>
+      </div>
+      <div>
+        <h3>Tagihan untuk</h3>
+        <p class="val" style="margin-bottom:6px;">${{customer_name}}</p>
+        <p class="addr">${{customer_address}}</p>
+      </div>
+    </div>
+
+    <div class="items-slot">${{items}}</div>
+
+    <div class="totals">
+      <div class="totals-table">
+        <div class="totals-row">
+          <span class="label">Subtotal</span>
+          <span class="value">${{subtotal}}</span>
+        </div>
+        ${{tax_row}}
+        <div class="totals-row total">
+          <span class="label">Total</span>
+          <span class="value">${{total}}</span>
+        </div>
+      </div>
+    </div>
+
+    <footer>Terima kasih atas kepercayaan Anda</footer>
+  </div>
+</body>
+</html>

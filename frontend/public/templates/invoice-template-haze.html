@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice ${{invoice_number}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #2d2a26;
+      background: #eceae6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px 64px;
+    }
+    .card {
+      background: #faf9f7;
+      border-radius: 16px;
+      padding: 48px 44px 52px;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 12px 40px rgba(45,42,38,0.06);
+    }
+    .accent {
+      width: 40px;
+      height: 3px;
+      background: linear-gradient(90deg, #5c6b4c, #8f9e7b);
+      border-radius: 2px;
+      margin-bottom: 36px;
+    }
+    .head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    .head .logo-section img {
+      max-width: 128px;
+      max-height: 64px;
+      object-fit: contain;
+    }
+    .head .inv-meta h1 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #7a756c;
+      margin-bottom: 6px;
+    }
+    .head .inv-meta .no {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1c1917;
+      letter-spacing: -0.03em;
+    }
+    .head .inv-meta .date {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #78716c;
+    }
+    .billto {
+      background: rgba(255,255,255,0.65);
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-bottom: 40px;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    .billto h2 {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #a8a29e;
+      margin-bottom: 12px;
+    }
+    .billto .name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1c1917;
+      margin-bottom: 6px;
+    }
+    .billto .addr {
+      font-size: 13px;
+      color: #57534e;
+      white-space: pre-line;
+    }
+    .items-slot {
+      margin-bottom: 40px;
+    }
+    .items-slot table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .totals-box {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .totals-table {
+      width: 280px;
+    }
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .totals-row .label {
+      color: #78716c;
+      font-size: 13px;
+    }
+    .totals-row .value {
+      font-weight: 600;
+      color: #44403c;
+    }
+    .totals-row.total {
+      border-bottom: none;
+      margin-top: 6px;
+      padding-top: 18px;
+      border-top: 2px solid #5c6b4c;
+    }
+    .totals-row.total .label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #292524;
+    }
+    .totals-row.total .value {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1c1917;
+    }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 12px;
+      color: #a8a29e;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="card">
+      <div class="accent" aria-hidden="true"></div>
+      <header class="head">
+        <div class="logo-section">${{logo}}</div>
+        <div class="inv-meta">
+          <h1>Invoice</h1>
+          <p class="no">${{invoice_number}}</p>
+          <p class="date">${{invoice_date}}</p>
+        </div>
+      </header>
+
+      <div class="billto">
+        <h2>Ditagihkan kepada</h2>
+        <p class="name">${{customer_name}}</p>
+        <p class="addr">${{customer_address}}</p>
+      </div>
+
+      <div class="items-slot">${{items}}</div>
+
+      <div class="totals-box">
+        <div class="totals-table">
+          <div class="totals-row">
+            <span class="label">Subtotal</span>
+            <span class="value">${{subtotal}}</span>
+          </div>
+          ${{tax_row}}
+          <div class="totals-row total">
+            <span class="label">Total</span>
+            <span class="value">${{total}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>Terima kasih atas kepercayaan Anda</footer>
+  </div>
+</body>
+</html>

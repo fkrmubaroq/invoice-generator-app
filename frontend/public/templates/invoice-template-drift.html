@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice ${{invoice_number}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Manrope", system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #134e4a;
+      background: #f0fdfa;
+      -webkit-font-smoothing: antialiased;
+    }
+    .page {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 36px 24px 72px;
+    }
+    .sheet {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(15, 118, 110, 0.1);
+    }
+    .wave {
+      height: 8px;
+      background: linear-gradient(90deg, #0d9488, #14b8a6, #5eead4);
+      opacity: 0.95;
+    }
+    .inner { padding: 40px 36px 44px; }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 36px;
+      padding-left: 16px;
+      border-left: 5px solid #0d9488;
+    }
+    .top .logo-section img {
+      max-width: 128px;
+      max-height: 64px;
+      object-fit: contain;
+    }
+    .top .inv h1 {
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 36px;
+      font-style: italic;
+      color: #0f766e;
+      letter-spacing: -0.02em;
+    }
+    .top .inv .no {
+      margin-top: 6px;
+      font-weight: 700;
+      font-size: 15px;
+      color: #115e59;
+    }
+    .top .inv .date {
+      margin-top: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0f766e;
+    }
+    .client {
+      background: linear-gradient(135deg, #ecfdf5, #f0fdfa);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 36px;
+      border: 1px solid rgba(13, 148, 136, 0.15);
+    }
+    .client h2 {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #0f766e;
+      margin-bottom: 10px;
+      opacity: 0.9;
+    }
+    .client .name { font-weight: 700; font-size: 16px; color: #134e4a; margin-bottom: 6px; }
+    .client .addr { color: #28736a; white-space: pre-line; font-size: 13px; }
+    .items-slot { margin-bottom: 36px; }
+    .items-slot table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .tot-wrap { display: flex; justify-content: flex-end; }
+    .tot-table { width: 288px; }
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(13, 148, 136, 0.15);
+    }
+    .totals-row .label { color: #5c8982; font-size: 13px; }
+    .totals-row .value { font-weight: 600; color: #134e4a; }
+    .totals-row.total {
+      border-bottom: none;
+      margin-top: 8px;
+      padding-top: 18px;
+      border-top: 2px solid #0d9488;
+    }
+    .totals-row.total .label { font-weight: 700; color: #115e59; }
+    .totals-row.total .value { font-size: 17px; font-weight: 700; color: #042f2e; }
+    footer {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 12px;
+      color: #5c8982;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="sheet">
+      <div class="wave" aria-hidden="true"></div>
+      <div class="inner">
+        <header class="top">
+          <div class="logo-section">${{logo}}</div>
+          <div class="inv">
+            <h1>Invoice</h1>
+            <p class="no">${{invoice_number}}</p>
+            <p class="date">${{invoice_date}}</p>
+          </div>
+        </header>
+        <div class="client">
+          <h2>Ditagihkan kepada</h2>
+          <p class="name">${{customer_name}}</p>
+          <p class="addr">${{customer_address}}</p>
+        </div>
+        <div class="items-slot">${{items}}</div>
+        <div class="tot-wrap">
+          <div class="tot-table">
+            <div class="totals-row">
+              <span class="label">Subtotal</span>
+              <span class="value">${{subtotal}}</span>
+            </div>
+            ${{tax_row}}
+            <div class="totals-row total">
+              <span class="label">Total</span>
+              <span class="value">${{total}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>Terima kasih atas kepercayaan Anda</footer>
+  </div>
+</body>
+</html>
