@@ -5,6 +5,7 @@ import type { UseFormReturn } from "react-hook-form";
 import type { InvoiceFormData } from "../invoice-form";
 import formatRupiah from "@/lib/format-rupiah";
 import dayjs from "dayjs";
+import { INVOICE_PPN_RATE_PERCENT } from "@/lib/invoice-ppn";
 
 export default function PreviewInvoice({
   url,
@@ -102,7 +103,14 @@ export default function PreviewInvoice({
   ): Record<string, string | number> => {
     const { html: htmlItems, subTotal } = parsedIntoTable(data.items);
     const logo = parsedBase64IntoImg(data.logo);
-    const tax = subTotal * (data.taxRate / 100);
+    const taxRatePercent = data.ppnEnabled ? INVOICE_PPN_RATE_PERCENT : 0;
+    const tax = subTotal * (taxRatePercent / 100);
+    const taxRow = data.ppnEnabled
+      ? `<div class="totals-row">
+          <span class="label">Pajak (${taxRatePercent}%)</span>
+          <span class="value">${formatRupiah(tax)}</span>
+        </div>`
+      : "";
     return {
       invoice_number: data.invoiceNumber,
       invoice_date: dayjs(data.invoiceDate).format("DD MMMM YYYY"),
@@ -110,8 +118,7 @@ export default function PreviewInvoice({
       customer_address: data.customerAddress,
       items: htmlItems,
       subtotal: formatRupiah(subTotal),
-      tax_rate: data.taxRate,
-      tax: formatRupiah(tax),
+      tax_row: taxRow,
       total: formatRupiah(tax + subTotal),
       logo,
     };

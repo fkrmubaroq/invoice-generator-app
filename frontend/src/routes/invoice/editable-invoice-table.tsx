@@ -18,7 +18,7 @@ interface EditableInvoiceTableProps {
     customerName: string;
     customerAddress: string;
     items: InvoiceItem[];
-    taxRate: number;
+    ppnEnabled: boolean;
     logo: string;
     preview?: File;
   }>;

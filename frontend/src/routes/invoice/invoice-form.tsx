@@ -38,6 +38,7 @@ import htmlToPdfMake from "html-to-pdfmake";
 import pdfMake from "pdfmake/build/pdfmake";
 import "pdfmake/build/vfs_fonts";
 import api from "@/lib/api";
+import { INVOICE_PPN_RATE_PERCENT } from "@/lib/invoice-ppn";
 
 const invoiceItemSchema = z.object({
   description: z.string().min(1, "Deskripsi wajib diisi"),
@@ -51,7 +52,7 @@ const invoiceFormSchema = z.object({
   customerName: z.string().min(1, "Nama pelanggan wajib diisi"),
   customerAddress: z.string().min(1, "Alamat wajib diisi"),
   items: z.array(invoiceItemSchema).min(1, "Minimal 1 item"),
-  taxRate: z.number().min(0).max(100),
+  ppnEnabled: z.boolean(),
   logo: z.string().min(1, "Logo Perusahaan wajib diisi"),
   preview: z.instanceof(File).optional(),
 });
@@ -70,7 +71,7 @@ export default function InvoiceForm() {
       customerName: "",
       customerAddress: "",
       items: [{ description: "", quantity: 1, unitPrice: 0 }],
-      taxRate: 11,
+      ppnEnabled: true,
       logo: "",
     },
   });
@@ -80,11 +81,13 @@ export default function InvoiceForm() {
     name: "items",
   });
 
-  const [watchItems, watchTaxRate, logo] = form.watch([
+  const [watchItems, watchPpnEnabled, logo] = form.watch([
     "items",
-    "taxRate",
+    "ppnEnabled",
     "logo",
   ]);
+
+  const effectiveTaxRate = watchPpnEnabled ? INVOICE_PPN_RATE_PERCENT : 0;
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -116,7 +119,7 @@ export default function InvoiceForm() {
     return sum + qty * price;
   }, 0);
 
-  const tax = (subtotal * (Number(watchTaxRate) || 0)) / 100;
+  const tax = (subtotal * effectiveTaxRate) / 100;
   const total = subtotal + tax;
 
   const handleLogoUpload = useCallback(
@@ -372,17 +375,25 @@ export default function InvoiceForm() {
               <CardTitle>Ringkasan</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center gap-4">
-                <Label htmlFor="taxRate" className="w-32">
-                  Pajak (%)
-                </Label>
-                <Input
-                  id="taxRate"
-                  type="number"
-                  min="0"
-                  max="100"
-                  className="w-24"
-                  {...form.register("taxRate", { valueAsNumber: true })}
+              <div className="flex items-center justify-between gap-4 rounded-md border border-input px-3 py-2.5">
+                <div className="space-y-0.5">
+                  <Label
+                    htmlFor="ppnEnabled"
+                    className="text-sm font-medium leading-none cursor-pointer"
+                  >
+                    PPN {INVOICE_PPN_RATE_PERCENT}%
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    Nonaktifkan jika invoice tanpa PPN
+                  </p>
+                </div>
+                <input
+                  id="ppnEnabled"
+                  type="checkbox"
+                  role="switch"
+                  aria-checked={watchPpnEnabled}
+                  className="h-5 w-9 shrink-0 cursor-pointer appearance-none rounded-full border border-input bg-muted transition-colors checked:bg-blue-600 checked:border-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 relative before:absolute before:top-0.5 before:left-0.5 before:h-4 before:w-4 before:rounded-full before:bg-background before:shadow-sm before:transition-transform checked:before:translate-x-4"
+                  {...form.register("ppnEnabled")}
                 />
               </div>
 
@@ -395,7 +406,7 @@ export default function InvoiceForm() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">
-                    Pajak ({watchTaxRate || 0}%)
+                    Pajak ({effectiveTaxRate}%)
                   </span>
                   <span className="font-medium">
                     {formatCurrencyPlain(tax)}

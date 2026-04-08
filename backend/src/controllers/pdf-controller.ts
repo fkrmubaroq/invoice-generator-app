@@ -3,6 +3,10 @@ import fs from "fs";
 import path from "path";
 import { pdfService } from "../services/pdf-service";
 
+/**
+ * PDF dibuat dari HTML yang dikirim klien. Subtotal, PPN (mis. 11% jika diaktifkan di form),
+ * dan total sudah harus tercantum di HTML — server tidak menghitung ulang pajak.
+ */
 export class PdfController {
   async generatePdf(
     req: Request,
